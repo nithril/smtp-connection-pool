@@ -3,7 +3,7 @@
 This library implements a SMTP connection pool using [Java Mail](https://java.net/projects/javamail/pages/Home) for the SMTP code and the 
 [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/) for the pool code.
 
-The pool, thanks to the Apache library, supports common pool's features:
+The pool, thanks to the Apache library, supports most common pool features:
 
 - Max total
 - Min idle
@@ -13,7 +13,7 @@ The pool, thanks to the Apache library, supports common pool's features:
 
  
  
-# How to use it?
+# How to use the connection pool?
 
 ```java
 
@@ -38,7 +38,7 @@ smtpConnectionPool.close();
 
 # How to configure the pool?
 
-Configure is holded by the Pool library, see the [Commons Pool Javadoc](https://commons.apache.org/proper/commons-pool/api-2.3/index.html). 
+Configuration is held by the Pool code, see the [Commons Pool Javadoc](https://commons.apache.org/proper/commons-pool/api-2.3/index.html). 
 
 Example:
 ```java
@@ -47,7 +47,7 @@ Example:
 GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 config.setMaxTotal(2);
 
-//Declare the factory and the connection pool, usually at the application startup
+//Declare the factory and the connection pool, usually at application startup
 SmtpConnectionPool smtpConnectionPool = new SmtpConnectionPool(SmtpConnectionFactoryBuilder.newSmtpBuilder().build(), config);
 
 ```
