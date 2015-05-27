@@ -20,7 +20,7 @@ The pool, thanks to the Apache library, supports most common pool features:
 <dependency>
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
