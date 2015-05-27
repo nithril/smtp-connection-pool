@@ -44,7 +44,7 @@ public class TestListener extends AbstractTest {
 
         try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
             transport.addTransportListener(listener);
-            MimeMessage mimeMessage = new MimeMessage(session);
+            MimeMessage mimeMessage = new MimeMessage(transport.getSession());
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.addTo("nithril@example.com");
             mimeMessageHelper.setFrom("nithril@example.com");
@@ -59,7 +59,7 @@ public class TestListener extends AbstractTest {
 
         try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
             transport.addTransportListener(listener);
-            MimeMessage mimeMessage = new MimeMessage(session);
+            MimeMessage mimeMessage = new MimeMessage(transport.getSession());
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.addTo("nithril@example.com");
             mimeMessageHelper.setFrom("nithril@example.com");

@@ -13,12 +13,7 @@ import org.nlab.smtp.transport.SmtpConnectionFactory;
 import org.nlab.smtp.transport.SmtpConnectionFactoryBuilder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.Session;
-import javax.mail.event.TransportAdapter;
-import javax.mail.event.TransportEvent;
-import javax.mail.event.TransportListener;
 import javax.mail.internet.MimeMessage;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by nlabrot on 01/05/15.
@@ -27,9 +22,6 @@ public class AbstractTest {
 
     public static final int PORT = 2525;
     public static final int MAX_CONNECTION = 8;
-
-
-    protected Session session;
 
     protected SmtpConnectionPool smtpConnectionPool;
     protected SmtpConnectionFactory transportFactory;
@@ -76,46 +68,14 @@ public class AbstractTest {
 
 
     protected void send() throws Exception {
-
-        AtomicInteger countDelivered = new AtomicInteger();
-        TransportListener listener = new TransportAdapter() {
-            @Override
-            public void messageDelivered(TransportEvent e) {
-                countDelivered.incrementAndGet();
-            }
-
-            @Override
-            public void messageNotDelivered(TransportEvent e) {
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-            }
-
-            @Override
-            public void messagePartiallyDelivered(TransportEvent e) {
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-                System.out.println("dddddddddddddddddddddddddd");
-            }
-        };
-
-        try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
-            transport.addTransportListener(listener);
-            MimeMessage mimeMessage = new MimeMessage(session);
+        try (ClosableSmtpConnection connection = smtpConnectionPool.borrowObject()) {
+            MimeMessage mimeMessage = new MimeMessage(connection.getSession());
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.addTo("nithril@example.com");
             mimeMessageHelper.setFrom("nithril@example.com");
-            mimeMessageHelper.setSubject("dd");
+            mimeMessageHelper.setSubject("foo");
             mimeMessageHelper.setText("example", false);
-            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-        } catch (Exception e) {
-            e.printStackTrace();
+            connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         }
     }
 }

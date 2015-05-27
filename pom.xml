@@ -6,7 +6,7 @@
 
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>SMTP Connection Pool</name>
     <description>SMTP Connection Pool which uses JavaMail and Apache Common Pool</description>
@@ -147,7 +147,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
+                        <version>1.6.5</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>

@@ -1,12 +1,9 @@
 package org.nlab.smtp.transport;
 
-import org.apache.commons.pool2.ObjectPool;
 import org.nlab.smtp.pool.ObjectPoolAware;
+import org.nlab.smtp.pool.SmtpConnectionPool;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.event.TransportListener;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -16,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware<ClosableSmtpConnection> {
 
     private final Transport delegate;
-    private ObjectPool<ClosableSmtpConnection> objectPool;
+    private SmtpConnectionPool objectPool;
 
     private final LinkedBlockingQueue<TransportListener> transportListeners = new LinkedBlockingQueue<>();
 
@@ -57,17 +54,22 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
     }
 
     @Override
-    public ObjectPool<ClosableSmtpConnection> getObjectPool() {
+    public SmtpConnectionPool getObjectPool() {
         return objectPool;
     }
 
     @Override
-    public void setObjectPool(ObjectPool<ClosableSmtpConnection> objectPool) {
+    public void setObjectPool(SmtpConnectionPool objectPool) {
         this.objectPool = objectPool;
     }
 
     @Override
     public Transport getDelegate() {
         return delegate;
+    }
+
+    @Override
+    public Session getSession() {
+        return objectPool.getSession();
     }
 }

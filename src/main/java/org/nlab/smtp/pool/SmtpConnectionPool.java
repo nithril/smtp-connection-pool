@@ -6,6 +6,8 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.nlab.smtp.transport.ClosableSmtpConnection;
 import org.nlab.smtp.transport.SmtpConnectionFactory;
 
+import javax.mail.Session;
+
 /**
  * Created by nlabrot on 30/04/15.
  */
@@ -40,4 +42,11 @@ public class SmtpConnectionPool extends GenericObjectPool<ClosableSmtpConnection
         }
         return object;
     }
+
+    public Session getSession(){
+        return ((SmtpConnectionFactory)getFactory()).getSession();
+    }
+
+
+
 }

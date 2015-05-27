@@ -1,9 +1,6 @@
 package org.nlab.smtp.transport;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.event.TransportListener;
 
 /**
@@ -22,4 +19,6 @@ public interface ClosableSmtpConnection extends AutoCloseable {
     void clearListeners();
 
     Transport getDelegate();
+
+    Session getSession();
 }

@@ -15,12 +15,12 @@ The pool, thanks to the Apache library, supports most common pool features:
  
 # How to use the connection pool?
 
-Maven configuration:
+[Maven configuration](http://search.maven.org/#artifactdetails|com.github.nithril|smtp-connection-pool|1.0.0|jar):
 ```xml
 <dependency>
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ SmtpConnectionPool smtpConnectionPool = new SmtpConnectionPool(SmtpConnectionFac
 
 //borrow an object in a try-with-resource statement or call `close` by yourself
 try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
-    MimeMessage mimeMessage = new MimeMessage(session);
+    MimeMessage mimeMessage = new MimeMessage(transport.getSession());
     MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
     mimeMessageHelper.addTo("to@example.com");
     mimeMessageHelper.setFrom("from@example.com");

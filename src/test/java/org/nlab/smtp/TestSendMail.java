@@ -66,6 +66,7 @@ public class TestSendMail extends AbstractTest {
         countDownLatch.await();
 
         stopServer();
+        Thread.sleep(5000);
         startServer();
 
         for (int i = 0; i < NB_THREAD; i++) {
