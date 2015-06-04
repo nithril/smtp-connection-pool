@@ -11,11 +11,11 @@ The pool, thanks to the Apache library, supports most common pool features:
 - Test on borrow
 - ...
 
- 
- 
-# How to use the connection pool?
 
-[Maven configuration](http://search.maven.org/#artifactdetails|com.github.nithril|smtp-connection-pool|1.0.0|jar):
+
+# Maven dependency
+
+[Maven configuration](http://search.maven.org/#search|ga|1|g%3A%22com.github.nithril%22%20a%3A%22smtp-connection-pool%22):
 ```xml
 <dependency>
     <groupId>com.github.nithril</groupId>
@@ -23,6 +23,50 @@ The pool, thanks to the Apache library, supports most common pool features:
     <version>1.0.1</version>
 </dependency>
 ```
+ 
+ 
+# How to use the connection pool?
+
+The `SmtpConnectionPool` creates a `Transport` using a `SmtpConnectionFactory`.
+
+## Smtp Connection Factory
+
+The factory can be created in some ways.
+ 
+**If you already have a configured `Session`**
+```java
+SmtpConnectionFactory factory = SmtpConnectionFactories.newSmtpFactory(aSession);
+```
+JavaMail will retrieve the protocol, host, username... from the session
+
+
+**You can build the factory using a builder**
+```java
+SmtpConnectionFactory factory = SmtpConnectionFactoryBuilder.newSmtpBuilder()
+                .session(aSession)
+                .protocol("smtp") 
+                .host("mailer")
+                .port(2525)
+                .username("foo")
+                .password("bar").build();
+```
+
+All builder parameters are optionals. JavaMail will fallback to the default configuration (smtp, port 25...)
+
+
+
+**You can instanciate directly the factory**
+```java
+new SmtpConnectionFactory(aSession, aTransportStrategy, aConnectionStrategy);
+```
+
+Where:
+
+- `TransportStrategy` allows to configure how the transport is got (default, protocol, url, provider)
+- `ConnectionStrategy` allows to configure how the connection is made (default, username/password...)
+ 
+
+## Smtp Connection Pool
 
 
 Java code:

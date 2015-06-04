@@ -3,8 +3,8 @@ package org.nlab.smtp.pool;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.nlab.smtp.transport.ClosableSmtpConnection;
-import org.nlab.smtp.transport.SmtpConnectionFactory;
+import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
+import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 
 import javax.mail.Session;
 

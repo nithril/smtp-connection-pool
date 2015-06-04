@@ -1,11 +1,12 @@
-package org.nlab.smtp.transport;
+package org.nlab.smtp.transport.connection;
 
 import org.nlab.smtp.pool.ObjectPoolAware;
 import org.nlab.smtp.pool.SmtpConnectionPool;
 
 import javax.mail.*;
 import javax.mail.event.TransportListener;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nlabrot on 30/04/15.
@@ -15,7 +16,7 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
     private final Transport delegate;
     private SmtpConnectionPool objectPool;
 
-    private final LinkedBlockingQueue<TransportListener> transportListeners = new LinkedBlockingQueue<>();
+    private final List<TransportListener> transportListeners = new ArrayList<>();
 
     public DefaultClosableSmtpConnection(Transport delegate) {
         this.delegate = delegate;

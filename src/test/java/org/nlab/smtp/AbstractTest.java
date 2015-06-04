@@ -8,9 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.nlab.smtp.pool.SmtpConnectionPool;
 import org.nlab.smtp.store.PersistentMailStore;
-import org.nlab.smtp.transport.ClosableSmtpConnection;
-import org.nlab.smtp.transport.SmtpConnectionFactory;
-import org.nlab.smtp.transport.SmtpConnectionFactoryBuilder;
+import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
+import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
+import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;

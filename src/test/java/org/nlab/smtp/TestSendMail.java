@@ -23,6 +23,12 @@ public class TestSendMail extends AbstractTest {
 
     @Test
     public void testSend() throws Exception {
+        send();
+    }
+
+
+    @Test
+    public void testConcurrentSend() throws Exception {
         AtomicInteger counter = new AtomicInteger();
 
         ExecutorService executorService = Executors.newFixedThreadPool(NB_THREAD);

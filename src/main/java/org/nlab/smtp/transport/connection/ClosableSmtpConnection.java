@@ -1,4 +1,4 @@
-package org.nlab.smtp.transport;
+package org.nlab.smtp.transport.connection;
 
 import javax.mail.*;
 import javax.mail.event.TransportListener;

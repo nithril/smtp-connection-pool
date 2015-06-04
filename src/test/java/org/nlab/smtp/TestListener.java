@@ -2,7 +2,7 @@ package org.nlab.smtp;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.nlab.smtp.transport.ClosableSmtpConnection;
+import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
