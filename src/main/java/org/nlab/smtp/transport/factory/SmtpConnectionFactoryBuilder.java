@@ -17,7 +17,17 @@ import static org.nlab.smtp.transport.strategy.TransportStrategy.newProtocolStra
 import static org.nlab.smtp.transport.strategy.TransportStrategy.newSessiontStrategy;
 
 /**
- * A part of the code of this class is taken from the Spring <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSenderImpl.html">JavaMailSenderImpl class</a>.
+ * A part of the code of this class is taken from the Spring
+ * <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSenderImpl.html">JavaMailSenderImpl class</a>.
+ * <br><br>
+ * {@link SmtpConnectionFactory} builder<br><br>
+ *
+ * If no {@link Session} is provided, a default one is created.<br>
+ * If any of the host , port, username, password properties are provided the factory is initialized with the {@link ConnectionStrategy#newConnectionStrategy(String, int, String, String)}
+ * otherwise with the {@link ConnectionStrategy#newConnectionStrategy()}<br>
+ * If the protocol is provided the factory is initialized with the {@link TransportStrategy#newProtocolStrategy}
+ * otherwise with the {@link TransportStrategy#newSessiontStrategy()} ()}<br>
+ *
  */
 public class SmtpConnectionFactoryBuilder {
 
@@ -82,6 +92,10 @@ public class SmtpConnectionFactoryBuilder {
         return this;
     }
 
+    /**
+     * Build the {@link SmtpConnectionFactory}
+     * @return
+     */
     public SmtpConnectionFactory build() {
         if (session == null) {
             session = Session.getInstance(new Properties());
