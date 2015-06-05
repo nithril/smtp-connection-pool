@@ -27,17 +27,17 @@ The pool, thanks to the Apache library, supports most common pool features:
  
 # How to use the connection pool?
 
-The `SmtpConnectionPool` creates a `Transport` using a `SmtpConnectionFactory`.
+The `SmtpConnectionPool` creates a JavaMail [`Transport`](https://javamail.java.net/nonav/docs/api/javax/mail/Transport.html) using a `SmtpConnectionFactory`.
 
 ## Smtp Connection Factory
 
-The factory can be created in some ways.
+The `SmtpConnectionFactory` can be created using different ways.
  
-**If you already have a configured `Session`**
+**If you already have a configured [`Session`](https://javamail.java.net/nonav/docs/api/javax/mail/Session.html)**
 ```java
 SmtpConnectionFactory factory = SmtpConnectionFactories.newSmtpFactory(aSession);
 ```
-JavaMail will retrieve the protocol, host, username... from the session
+JavaMail will retrieve the protocol, host, username... from the `Session`.
 
 
 **You can build the factory using a builder**
@@ -62,8 +62,9 @@ new SmtpConnectionFactory(aSession, aTransportStrategy, aConnectionStrategy);
 
 Where:
 
-- `TransportStrategy` allows to configure how the transport is got (default, protocol, url, provider)
-- `ConnectionStrategy` allows to configure how the connection is made (default, username/password...)
+- `TransportStrategy` allows to configure how the 
+[transport is got](https://javamail.java.net/nonav/docs/api/javax/mail/Session.html#getTransport%28%29) (default, protocol, url, provider)
+- `ConnectionStrategy` allows to configure [how to connect](https://javamail.java.net/nonav/docs/api/javax/mail/Service.html#connect%28%29)  (default, username/password...)
  
 
 ## Smtp Connection Pool
