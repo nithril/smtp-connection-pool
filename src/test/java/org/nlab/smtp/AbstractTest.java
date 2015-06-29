@@ -29,7 +29,7 @@ public class AbstractTest {
     protected SmtpServer server;
 
     static {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "debug");
+        //System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "debug");
     }
 
 

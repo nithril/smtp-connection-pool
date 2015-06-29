@@ -39,7 +39,7 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
     }
 
     public SmtpConnectionFactory(Session session, TransportStrategy transportFactory, ConnectionStrategy connectionStrategy) {
-        this(session, transportFactory, connectionStrategy, Collections.emptyList());
+        this(session, transportFactory, connectionStrategy, Collections.<TransportListener>emptyList());
     }
 
 

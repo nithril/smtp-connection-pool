@@ -6,8 +6,8 @@ import org.nlab.smtp.transport.strategy.TransportStrategy;
 import javax.mail.Session;
 import java.util.Properties;
 
-import static org.nlab.smtp.transport.strategy.ConnectionStrategy.newConnectionStrategy;
-import static org.nlab.smtp.transport.strategy.TransportStrategy.newSessiontStrategy;
+import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;
+import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newSessiontStrategy;
 
 /**
  * {@link SmtpConnectionFactory} factory

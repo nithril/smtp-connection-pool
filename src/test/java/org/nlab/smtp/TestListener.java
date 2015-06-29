@@ -32,7 +32,7 @@ public class TestListener extends AbstractTest {
 
         final Phaser phaser = new Phaser(2);
 
-        AtomicInteger countDelivered = new AtomicInteger();
+        final AtomicInteger countDelivered = new AtomicInteger();
 
         TransportListener listener = new TransportAdapter() {
             @Override

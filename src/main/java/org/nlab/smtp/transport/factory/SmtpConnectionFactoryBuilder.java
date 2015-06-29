@@ -1,7 +1,9 @@
 package org.nlab.smtp.transport.factory;
 
 import org.nlab.smtp.transport.strategy.ConnectionStrategy;
+import org.nlab.smtp.transport.strategy.ConnectionStrategyFactory;
 import org.nlab.smtp.transport.strategy.TransportStrategy;
+import org.nlab.smtp.transport.strategy.TransportStrategyFactory;
 
 import javax.mail.Authenticator;
 import javax.mail.Session;
@@ -12,9 +14,9 @@ import java.util.List;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
-import static org.nlab.smtp.transport.strategy.ConnectionStrategy.newConnectionStrategy;
-import static org.nlab.smtp.transport.strategy.TransportStrategy.newProtocolStrategy;
-import static org.nlab.smtp.transport.strategy.TransportStrategy.newSessiontStrategy;
+import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;
+import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newProtocolStrategy;
+import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newSessiontStrategy;
 
 /**
  * A part of the code of this class is taken from the Spring
@@ -23,10 +25,10 @@ import static org.nlab.smtp.transport.strategy.TransportStrategy.newSessiontStra
  * {@link SmtpConnectionFactory} builder<br><br>
  *
  * If no {@link Session} is provided, a default one is created.<br>
- * If any of the host , port, username, password properties are provided the factory is initialized with the {@link ConnectionStrategy#newConnectionStrategy(String, int, String, String)}
- * otherwise with the {@link ConnectionStrategy#newConnectionStrategy()}<br>
- * If the protocol is provided the factory is initialized with the {@link TransportStrategy#newProtocolStrategy}
- * otherwise with the {@link TransportStrategy#newSessiontStrategy()} ()}<br>
+ * If any of the host , port, username, password properties are provided the factory is initialized with the {@link ConnectionStrategyFactory#newConnectionStrategy(String, int, String, String)}
+ * otherwise with the {@link ConnectionStrategyFactory#newConnectionStrategy()}<br>
+ * If the protocol is provided the factory is initialized with the {@link TransportStrategyFactory#newProtocolStrategy}
+ * otherwise with the {@link TransportStrategyFactory#newSessiontStrategy()} ()}<br>
  *
  */
 public class SmtpConnectionFactoryBuilder {

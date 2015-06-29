@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PersistentMailStore implements MailStore {
 
-    private List<MailMessage> mailMessages = Collections.synchronizedList(new ArrayList<>());
+    private List<MailMessage> mailMessages = Collections.synchronizedList(new ArrayList<MailMessage>());
 
     @Override
     public int getEmailCount() {
