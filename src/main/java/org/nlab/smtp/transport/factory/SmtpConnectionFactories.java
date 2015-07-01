@@ -1,8 +1,5 @@
 package org.nlab.smtp.transport.factory;
 
-import org.nlab.smtp.transport.strategy.ConnectionStrategy;
-import org.nlab.smtp.transport.strategy.TransportStrategy;
-
 import javax.mail.Session;
 import java.util.Properties;
 
@@ -20,8 +17,8 @@ public final class SmtpConnectionFactories {
     /**
      * Initialize the {@link SmtpConnectionFactory} with a
      * {@link Session} initialized to {@code Session.getInstance(new Properties())},
-     * {@link TransportStrategy#newSessiontStrategy},
-     * {@link ConnectionStrategy#newConnectionStrategy}
+     * {@link org.nlab.smtp.transport.strategy.TransportStrategyFactory#newSessiontStrategy},
+     * {@link org.nlab.smtp.transport.strategy.ConnectionStrategyFactory#newConnectionStrategy}
      * @return
      */
     public static SmtpConnectionFactory newSmtpFactory(){
@@ -31,8 +28,8 @@ public final class SmtpConnectionFactories {
     /**
      * Initialize the {@link SmtpConnectionFactory} using the provided
      * {@link Session} and
-     * {@link TransportStrategy#newSessiontStrategy},
-     * {@link ConnectionStrategy#newConnectionStrategy}
+     * {@link org.nlab.smtp.transport.strategy.TransportStrategyFactory#newSessiontStrategy},
+     * {@link org.nlab.smtp.transport.strategy.ConnectionStrategyFactory#newConnectionStrategy}
      * @param session
      * @return
      */

@@ -1,18 +1,20 @@
 package org.nlab.smtp.store;
 
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
+
+import org.apache.commons.collections.CollectionUtils;
+
 import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.MailStore;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by nlabrot on 01/05/15.
  */
 public class PersistentMailStore implements MailStore {
 
-    private List<MailMessage> mailMessages = Collections.synchronizedList(new ArrayList<MailMessage>());
+    private BlockingDeque<MailMessage> mailMessages = new LinkedBlockingDeque<>();
 
     @Override
     public int getEmailCount() {
@@ -31,11 +33,15 @@ public class PersistentMailStore implements MailStore {
 
     @Override
     public MailMessage getMessage(int index) {
-        return mailMessages.get(index);
+        return (MailMessage)CollectionUtils.get(mailMessages , index);
     }
 
     @Override
     public void clearMessages() {
         mailMessages.clear();
+    }
+
+    public BlockingDeque<MailMessage> getMailMessages() {
+        return mailMessages;
     }
 }

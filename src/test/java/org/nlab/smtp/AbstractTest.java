@@ -1,8 +1,7 @@
 package org.nlab.smtp;
 
-import com.dumbster.smtp.ServerOptions;
-import com.dumbster.smtp.SmtpServer;
-import com.dumbster.smtp.SmtpServerFactory;
+import javax.mail.internet.MimeMessage;
+
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +12,9 @@ import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.internet.MimeMessage;
+import com.dumbster.smtp.ServerOptions;
+import com.dumbster.smtp.SmtpServer;
+import com.dumbster.smtp.SmtpServerFactory;
 
 /**
  * Created by nlabrot on 01/05/15.
@@ -31,6 +32,8 @@ public class AbstractTest {
     static {
         //System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "debug");
     }
+
+    protected PersistentMailStore persistentMailStore;
 
 
     public int getMaxTotalConnection(){
@@ -58,7 +61,8 @@ public class AbstractTest {
     protected void startServer() {
         ServerOptions serverOptions = new ServerOptions();
         serverOptions.port = PORT;
-        serverOptions.mailStore = new PersistentMailStore();
+        persistentMailStore = new PersistentMailStore();
+        serverOptions.mailStore = persistentMailStore;
         server = SmtpServerFactory.startServer(serverOptions);
     }
 

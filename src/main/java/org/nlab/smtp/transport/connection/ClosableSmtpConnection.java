@@ -1,10 +1,13 @@
 package org.nlab.smtp.transport.connection;
 
-import org.nlab.smtp.exception.MailSendException;
-
-import javax.mail.*;
+import javax.mail.Address;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.event.TransportListener;
 import javax.mail.internet.MimeMessage;
+
+import org.nlab.smtp.exception.MailSendException;
 
 /**
  * Created by nlabrot on 30/04/15.
@@ -24,7 +27,7 @@ public interface ClosableSmtpConnection extends AutoCloseable {
 
     /**
      * Send a message. The list of recipients are taken from {@link MimeMessage#getAllRecipients()}
-     * @param msg
+     * @param msg MimeMessage
      * @throws MessagingException
      */
     void sendMessage(MimeMessage msg) throws MessagingException;
@@ -32,43 +35,43 @@ public interface ClosableSmtpConnection extends AutoCloseable {
     /**
      * Send the given array of JavaMail MIME messages in batch. Do not stop the batch when a message could not be sent
      * {@link MailSendException#getFailedMessages()} will contain the failed messages
-     * @param msgs
+     * @param msgs Array of MimeMessage
      * @throws MailSendException in case of failure when sending a message
      */
     void sendMessages(MimeMessage... msgs) throws MailSendException;
 
     /**
-     *
+     * Test if the current connection is connected
      * @return
      */
     boolean isConnected();
 
     /**
-     *
+     * Add a new {@link TransportListener}
      * @param l
      */
     void addTransportListener(TransportListener l);
 
     /**
-     *
+     * Remove the provided {@link TransportListener}
      * @param l
      */
     void removeTransportListener(TransportListener l);
 
     /**
-     *
+     * Clear the list of {@link TransportListener}
      */
     void clearListeners();
 
     /**
      *
-     * @return
+     * @return the {@link Transport} associated to this connection
      */
     Transport getDelegate();
 
     /**
      *
-     * @return
+     * @return the {@link Session}
      */
     Session getSession();
 }

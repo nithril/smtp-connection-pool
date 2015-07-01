@@ -132,7 +132,10 @@ public class TestSendMail extends AbstractTest {
 
             connection.sendMessages(mimeMessage1, mimeMessage2);
 
-            Assert.assertEquals(2, server.getEmailCount());
+            Assert.assertNotNull(persistentMailStore.getMailMessages().poll(10, TimeUnit.SECONDS));
+            Assert.assertNotNull(persistentMailStore.getMailMessages().poll(10, TimeUnit.SECONDS));
+
+            Assert.assertEquals(0, server.getEmailCount());
         }
     }
 }
