@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Juergen Hoeller
  */
 @SuppressWarnings("serial")
-public class MailSendException extends Exception {
+public class MailSendException extends RuntimeException {
 
     private transient final Map<Object, Exception> failedMessages;
 
