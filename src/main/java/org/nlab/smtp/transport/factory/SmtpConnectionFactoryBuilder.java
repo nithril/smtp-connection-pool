@@ -1,10 +1,5 @@
 package org.nlab.smtp.transport.factory;
 
-import org.nlab.smtp.transport.strategy.ConnectionStrategy;
-import org.nlab.smtp.transport.strategy.ConnectionStrategyFactory;
-import org.nlab.smtp.transport.strategy.TransportStrategy;
-import org.nlab.smtp.transport.strategy.TransportStrategyFactory;
-
 import javax.mail.Authenticator;
 import javax.mail.Session;
 import javax.mail.event.TransportListener;
@@ -12,6 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import org.nlab.smtp.transport.strategy.ConnectionStrategy;
+import org.nlab.smtp.transport.strategy.ConnectionStrategyFactory;
+import org.nlab.smtp.transport.strategy.TransportStrategy;
+import org.nlab.smtp.transport.strategy.TransportStrategyFactory;
 
 import static java.util.Objects.requireNonNull;
 import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;
@@ -65,12 +65,12 @@ public class SmtpConnectionFactoryBuilder {
     }
 
     public SmtpConnectionFactoryBuilder protocol(String protocol) {
-        this.protocol = requireNonNull(protocol);
+        this.protocol = protocol;
         return this;
     }
 
     public SmtpConnectionFactoryBuilder host(String host) {
-        this.host = requireNonNull(host);
+        this.host = host;
         return this;
     }
 
@@ -80,12 +80,12 @@ public class SmtpConnectionFactoryBuilder {
     }
 
     public SmtpConnectionFactoryBuilder username(String username) {
-        this.username = requireNonNull(username);
+        this.username = username;
         return this;
     }
 
     public SmtpConnectionFactoryBuilder password(String password) {
-        this.password = requireNonNull(password);
+        this.password = password;
         return this;
     }
 

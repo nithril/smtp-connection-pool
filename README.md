@@ -84,7 +84,7 @@ try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
     mimeMessageHelper.setFrom("from@example.com");
     mimeMessageHelper.setSubject("Hi!");
     mimeMessageHelper.setText("Hello World!", false);
-    transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+    transport.sendMessage(mimeMessage);
 }
 
 //Close the pool, usually when the application shutdown
