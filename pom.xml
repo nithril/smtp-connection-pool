@@ -36,9 +36,9 @@
 
 
     <properties>
-        <javax.mail.version>1.5.5</javax.mail.version>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <javax.mail.version>1.5.6</javax.mail.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
 
