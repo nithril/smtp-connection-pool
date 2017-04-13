@@ -17,7 +17,10 @@ Java 1.7
 
 # Maven dependency
 
-[Maven configuration](http://search.maven.org/#search|ga|1|g%3A%22com.github.nithril%22%20a%3A%22smtp-connection-pool%22):
+Search for the latest version on [Maven central](http://search.maven.org/#search|ga|1|g%3A%22com.github.nithril%22%20a%3A%22smtp-connection-pool%22):
+
+eg.:
+
 ```xml
 <dependency>
     <groupId>com.github.nithril</groupId>
