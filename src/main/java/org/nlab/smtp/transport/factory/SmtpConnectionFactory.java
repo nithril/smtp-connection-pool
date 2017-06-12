@@ -101,6 +101,13 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
         return session;
     }
 
+    public TransportStrategy getTransportFactory() {
+        return transportFactory;
+    }
+
+    public ConnectionStrategy getConnectionStrategy() {
+        return connectionStrategy;
+    }
 
     private void initDefaultListeners(ClosableSmtpConnection smtpTransport) {
         for (TransportListener transportListener : defaultTransportListeners) {

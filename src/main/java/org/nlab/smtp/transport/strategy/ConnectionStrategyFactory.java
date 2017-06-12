@@ -11,7 +11,7 @@ import javax.mail.Transport;
  *     <li>{@link Transport#connect(String, String, String)} ()} =&gt; {@link  #newConnectionStrategy(String, String, String)} </li>
  *     <li>{@link Transport#connect(String, int, String, String)} ()} =&gt; {@link  #newConnectionStrategy(String, int, String, String)} </li>
  * </ol>
- *
+ * <p>
  * Created by nlabrot on 04/06/15.
  */
 public class ConnectionStrategyFactory {
@@ -32,6 +32,14 @@ public class ConnectionStrategyFactory {
             public void connect(Transport transport) throws MessagingException {
                 transport.connect(username, password);
             }
+
+      @Override
+      public String toString() {
+        return "ConnectionStrategy{" +
+               "username=" + username +
+               '}';
+      }
+
         };
     }
 
@@ -41,6 +49,14 @@ public class ConnectionStrategyFactory {
             public void connect(Transport transport) throws MessagingException {
                 transport.connect(host, username, password);
             }
+
+      @Override
+      public String toString() {
+        return "ConnectionStrategy{" +
+               "host=" + host +
+               ", username=" + username +
+               '}';
+      }
         };
     }
 
@@ -50,6 +66,15 @@ public class ConnectionStrategyFactory {
             public void connect(Transport transport) throws MessagingException {
                 transport.connect(host, port, username, password);
             }
+
+      @Override
+      public String toString() {
+        return "ConnectionStrategy{" +
+               "host=" + host +
+               ", port=" + port +
+               ", username=" + username +
+               '}';
+      }
         };
     }
 }

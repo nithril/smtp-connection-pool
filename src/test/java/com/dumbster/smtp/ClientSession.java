@@ -19,8 +19,6 @@ public class ClientSession implements Runnable {
 
     private volatile boolean closed = false;
 
-
-
     public ClientSession(SmtpServer smtpServer, IOSource socket, MailStore mailStore) {
         this.smtpServer = smtpServer;
         this.socket = socket;
