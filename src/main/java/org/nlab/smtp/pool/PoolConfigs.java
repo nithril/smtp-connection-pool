@@ -5,12 +5,15 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Ease pool configuration with default pool configuration
+ *
  * Created by nlabrot on 12/06/17.
  */
 public class PoolConfigs {
 
   /**
    * Default {@link GenericObjectPoolConfig} config
+   * See default parameters {@link GenericObjectPoolConfig}
    * @return
    */
   public static GenericObjectPoolConfig defaultConfig() {
