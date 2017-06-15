@@ -5,7 +5,7 @@ package org.nlab.smtp.pool;
  */
 public interface ObjectPoolAware<T> {
 
-    void setObjectPool(SmtpConnectionPool objectPool);
+  void setObjectPool(SmtpConnectionPool objectPool);
 
-    SmtpConnectionPool getObjectPool();
+  SmtpConnectionPool getObjectPool();
 }
