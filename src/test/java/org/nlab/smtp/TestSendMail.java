@@ -44,7 +44,7 @@ public class TestSendMail extends AbstractTest {
         @Override
         public Object call() throws Exception {
           for (int m = 0; m < 200; m++) {
-            TestSendMail.this.send();
+            send();
             counter.incrementAndGet();
           }
           return null;
@@ -55,11 +55,15 @@ public class TestSendMail extends AbstractTest {
     executorService.awaitTermination(10, TimeUnit.SECONDS);
     Assert.assertEquals(NB_THREAD * 200, counter.get());
     Assert.assertEquals(8, smtpConnectionPool.getCreatedCount());
+
+    waitForMessagesCount(2);
+    Assert.assertEquals(NB_THREAD * 200, getImapHostManager().getAllMessages().size());
+
   }
 
 
   @Test
-  public void testSendAfterDeconnection() throws Exception {
+  public void testSendAfterServerStopStart() throws Exception {
     final AtomicInteger counter = new AtomicInteger();
 
     ExecutorService executorService = Executors.newFixedThreadPool(1000);
@@ -72,7 +76,7 @@ public class TestSendMail extends AbstractTest {
         @Override
         public Object call() throws Exception {
           for (int m = 0; m < 10; m++) {
-            TestSendMail.this.send();
+            send();
             counter.incrementAndGet();
           }
           countDownLatch.countDown();
@@ -83,8 +87,11 @@ public class TestSendMail extends AbstractTest {
 
     countDownLatch.await();
 
+    waitForMessagesCount(NB_THREAD * 10);
+    Assert.assertEquals(NB_THREAD * 10, greenMail.getReceivedMessages().length);
+
+
     stopServer();
-    Thread.sleep(5000);
     startServer();
 
     for (int i = 0; i < NB_THREAD; i++) {
@@ -92,7 +99,7 @@ public class TestSendMail extends AbstractTest {
         @Override
         public Object call() throws Exception {
           for (int m = 0; m < 10; m++) {
-            TestSendMail.this.send();
+            send();
             counter.incrementAndGet();
           }
           return null;
@@ -100,11 +107,13 @@ public class TestSendMail extends AbstractTest {
       });
     }
 
+    waitForMessagesCount(NB_THREAD * 10);
+    Assert.assertEquals(NB_THREAD * 10, greenMail.getReceivedMessages().length);
 
     executorService.shutdown();
     executorService.awaitTermination(10, TimeUnit.SECONDS);
     Assert.assertEquals(2 * NB_THREAD * 10, counter.get());
-    Assert.assertEquals(2 * MAX_CONNECTION, smtpConnectionPool.getCreatedCount());
+
   }
 
   @Test
@@ -133,10 +142,8 @@ public class TestSendMail extends AbstractTest {
 
       connection.sendMessages(mimeMessage1, mimeMessage2);
 
-      Assert.assertNotNull(persistentMailStore.getMailMessages().poll(10, TimeUnit.SECONDS));
-      Assert.assertNotNull(persistentMailStore.getMailMessages().poll(10, TimeUnit.SECONDS));
-
-      Assert.assertEquals(0, server.getEmailCount());
+      waitForMessagesCount(2);
+      Assert.assertEquals(2, getImapHostManager().getAllMessages().size());
     }
   }
 }

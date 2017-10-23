@@ -1,18 +1,19 @@
 package org.nlab.smtp;
 
-import com.dumbster.smtp.ServerOptions;
-import com.dumbster.smtp.SmtpServer;
-import com.dumbster.smtp.SmtpServerFactory;
+import com.google.common.base.Stopwatch;
+import com.icegreen.greenmail.imap.ImapHostManager;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.nlab.smtp.pool.SmtpConnectionPool;
-import org.nlab.smtp.store.PersistentMailStore;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import java.util.concurrent.TimeUnit;
 import javax.mail.internet.MimeMessage;
 
 /**
@@ -20,19 +21,17 @@ import javax.mail.internet.MimeMessage;
  */
 public class AbstractTest {
 
-  public static final int PORT = 2525;
+  public static final int PORT = 3025;
   public static final int MAX_CONNECTION = 8;
 
   protected SmtpConnectionPool smtpConnectionPool;
   protected SmtpConnectionFactory transportFactory;
 
-  protected SmtpServer server;
-
   static {
     //System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "debug");
   }
 
-  protected PersistentMailStore persistentMailStore;
+  protected GreenMail greenMail;
 
 
   public int getMaxTotalConnection() {
@@ -48,25 +47,23 @@ public class AbstractTest {
     transportFactory = SmtpConnectionFactoryBuilder.newSmtpBuilder().port(PORT).build();
     smtpConnectionPool = new SmtpConnectionPool(transportFactory, genericObjectPoolConfig);
 
+
     startServer();
   }
 
   @After
   public void release() {
-    stopServer();
     smtpConnectionPool.close();
+    stopServer();
   }
 
   protected void startServer() {
-    ServerOptions serverOptions = new ServerOptions();
-    serverOptions.port = PORT;
-    persistentMailStore = new PersistentMailStore();
-    serverOptions.mailStore = persistentMailStore;
-    server = SmtpServerFactory.startServer(serverOptions);
+    greenMail = new GreenMail(ServerSetupTest.SMTP);
+    greenMail.start();
   }
 
   protected void stopServer() {
-    server.stop();
+    greenMail.stop();
   }
 
 
@@ -81,4 +78,18 @@ public class AbstractTest {
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
     }
   }
+
+  protected void waitForMessagesCount(int count) throws InterruptedException {
+    Stopwatch stopwatch = Stopwatch.createStarted();
+    while (getImapHostManager().getAllMessages().size() < count
+        && stopwatch.elapsed(TimeUnit.MILLISECONDS) < 500) {
+      Thread.sleep(50l);
+    }
+  }
+
+  protected ImapHostManager getImapHostManager(){
+    return greenMail.getManagers().getImapHostManager();
+  }
+
+
 }
