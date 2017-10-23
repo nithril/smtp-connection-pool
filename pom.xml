@@ -6,7 +6,7 @@
 
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.3</version>
 
     <name>SMTP Connection Pool</name>
     <description>SMTP Connection Pool which uses JavaMail and Apache Common Pool</description>
@@ -97,9 +97,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.bitmechanic</groupId>
-            <artifactId>dumbster</artifactId>
-            <version>1.9.0.2</version>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.5.5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
