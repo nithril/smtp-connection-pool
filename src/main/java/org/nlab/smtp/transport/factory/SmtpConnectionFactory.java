@@ -82,13 +82,6 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
 
   @Override
   public void activateObject(PooledObject<ClosableSmtpConnection> pooledObject) throws Exception {
-    boolean connected = pooledObject.getObject().isConnected();
-
-    LOG.debug("activateObject [{}]", connected);
-    if (!connected) {
-      throw new Exception("Transport is not connected");
-    }
-
     initDefaultListeners(pooledObject.getObject());
   }
 

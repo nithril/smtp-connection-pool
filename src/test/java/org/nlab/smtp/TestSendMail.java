@@ -56,7 +56,7 @@ public class TestSendMail extends AbstractTest {
     Assert.assertEquals(NB_THREAD * 200, counter.get());
     Assert.assertEquals(8, smtpConnectionPool.getCreatedCount());
 
-    waitForMessagesCount(2);
+    waitForMessagesCount(NB_THREAD * 200);
     Assert.assertEquals(NB_THREAD * 200, getImapHostManager().getAllMessages().size());
 
   }

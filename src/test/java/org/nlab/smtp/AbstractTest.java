@@ -43,6 +43,7 @@ public class AbstractTest {
   public void init() {
     GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
     genericObjectPoolConfig.setMaxTotal(getMaxTotalConnection());
+    genericObjectPoolConfig.setTestOnBorrow(true);
 
     transportFactory = SmtpConnectionFactoryBuilder.newSmtpBuilder().port(PORT).build();
     smtpConnectionPool = new SmtpConnectionPool(transportFactory, genericObjectPoolConfig);
