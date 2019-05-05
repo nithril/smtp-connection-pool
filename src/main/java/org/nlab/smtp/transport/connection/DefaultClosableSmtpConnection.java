@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 /**
  * Created by nlabrot on 30/04/15.
  */
-public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware<ClosableSmtpConnection> {
+public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware {
 
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
@@ -66,13 +66,8 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     objectPool.returnObject(this);
-  }
-
-  @Override
-  public SmtpConnectionPool getObjectPool() {
-    return objectPool;
   }
 
   @Override
@@ -109,10 +104,9 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
   private void doSend(MimeMessage... mimeMessages) throws MailSendException {
     Map<Object, Exception> failedMessages = new LinkedHashMap<>();
 
-    for (int i = 0; i < mimeMessages.length; i++) {
+    for (MimeMessage mimeMessage : mimeMessages) {
 
       // Send message via current transport...
-      MimeMessage mimeMessage = mimeMessages[i];
       try {
         doSend(mimeMessage, mimeMessage.getAllRecipients());
       } catch (Exception ex) {
