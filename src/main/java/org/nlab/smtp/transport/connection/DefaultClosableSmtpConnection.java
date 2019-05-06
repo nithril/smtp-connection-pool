@@ -27,7 +27,7 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
-  private boolean valid;
+  private boolean shouldInvalidateOnClose;
 
   private final List<TransportListener> transportListeners = new ArrayList<>();
 
@@ -37,12 +37,12 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   @Override
   public void invalidate() {
-    valid = false;
+    shouldInvalidateOnClose = true;
   }
 
   @Override
   public void setInvalid(boolean invalid) {
-    valid = !invalid;
+    shouldInvalidateOnClose = invalid;
   }
 
   public void sendMessage(MimeMessage msg, Address[] recipients) throws MessagingException {
@@ -82,7 +82,7 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   @Override
   public void close() {
-    if(valid) {
+    if(!shouldInvalidateOnClose) {
       objectPool.returnObject(this);
     } else {
       try {
