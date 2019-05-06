@@ -3,6 +3,8 @@ package org.nlab.smtp.transport.connection;
 import org.nlab.smtp.exception.MailSendException;
 import org.nlab.smtp.pool.ObjectPoolAware;
 import org.nlab.smtp.pool.SmtpConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,13 +23,26 @@ import javax.mail.internet.MimeMessage;
  */
 public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware {
 
+  private static final Logger LOG = LoggerFactory.getLogger(DefaultClosableSmtpConnection.class);
+
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
+  private boolean valid;
 
   private final List<TransportListener> transportListeners = new ArrayList<>();
 
   public DefaultClosableSmtpConnection(Transport delegate) {
     this.delegate = delegate;
+  }
+
+  @Override
+  public void invalidate() {
+    valid = false;
+  }
+
+  @Override
+  public void setInvalid(boolean invalid) {
+    valid = !invalid;
   }
 
   public void sendMessage(MimeMessage msg, Address[] recipients) throws MessagingException {
@@ -67,7 +82,15 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   @Override
   public void close() {
-    objectPool.returnObject(this);
+    if(valid) {
+      objectPool.returnObject(this);
+    } else {
+      try {
+        objectPool.invalidateObject(this);
+      } catch(Exception e) {
+        LOG.error("Failed to invalidate object in the pool", e);
+      }
+    }
   }
 
   @Override

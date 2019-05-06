@@ -17,6 +17,18 @@ public interface ClosableSmtpConnection extends AutoCloseable {
   String HEADER_MESSAGE_ID = "Message-ID";
 
   /**
+   * Marks this pooled object to be invalid such that it is not returned in the pool when closed.
+   * This is equivalent to setInvalid(true).
+   */
+  void invalidate();
+
+  /**
+   * Allows setting the invalid flag to true or false
+   * @param invalid true if the object should not be returned in the pool when closed.
+   */
+  void setInvalid(boolean invalid);
+
+  /**
    * Send a message to a list of recipients
    *
    * @param msg
