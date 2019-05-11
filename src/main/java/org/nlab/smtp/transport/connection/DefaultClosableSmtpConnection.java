@@ -27,12 +27,14 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
+  private boolean invalidateConnectionOnException;
   private boolean shouldInvalidateOnClose;
 
   private final List<TransportListener> transportListeners = new ArrayList<>();
 
-  public DefaultClosableSmtpConnection(Transport delegate) {
+  public DefaultClosableSmtpConnection(Transport delegate, boolean invalidateConnectionOnException) {
     this.delegate = delegate;
+    this.invalidateConnectionOnException = invalidateConnectionOnException;
   }
 
   @Override
@@ -111,35 +113,48 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   private void doSend(MimeMessage mimeMessage, Address[] recipients) throws MessagingException {
 
-    if (mimeMessage.getSentDate() == null) {
-      mimeMessage.setSentDate(new Date());
+    try {
+      if (mimeMessage.getSentDate() == null) {
+        mimeMessage.setSentDate(new Date());
+      }
+      String messageId = mimeMessage.getMessageID();
+      mimeMessage.saveChanges();
+      if (messageId != null) {
+        // Preserve explicitly specified message id...
+        mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
+      }
+      delegate.sendMessage(mimeMessage, recipients);
+    } catch(Error | RuntimeException | MessagingException e) {
+      if(invalidateConnectionOnException) {
+        invalidate();
+      }
+      throw e;
     }
-    String messageId = mimeMessage.getMessageID();
-    mimeMessage.saveChanges();
-    if (messageId != null) {
-      // Preserve explicitly specified message id...
-      mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
-    }
-    delegate.sendMessage(mimeMessage, recipients);
   }
 
 
   private void doSend(MimeMessage... mimeMessages) throws MailSendException {
-    Map<Object, Exception> failedMessages = new LinkedHashMap<>();
+    try {
+      Map<Object, Exception> failedMessages = new LinkedHashMap<>();
 
-    for (MimeMessage mimeMessage : mimeMessages) {
+      for (MimeMessage mimeMessage : mimeMessages) {
 
-      // Send message via current transport...
-      try {
-        doSend(mimeMessage, mimeMessage.getAllRecipients());
-      } catch (Exception ex) {
-        failedMessages.put(mimeMessage, ex);
+        // Send message via current transport...
+        try {
+          doSend(mimeMessage, mimeMessage.getAllRecipients());
+        } catch (Exception ex) {
+          failedMessages.put(mimeMessage, ex);
+        }
       }
-    }
 
-    if (!failedMessages.isEmpty()) {
-      throw new MailSendException(failedMessages);
+      if (!failedMessages.isEmpty()) {
+        throw new MailSendException(failedMessages);
+      }
+    } catch (Error | RuntimeException e) {
+      if(invalidateConnectionOnException) {
+        invalidate();
+      }
+      throw e;
     }
   }
-
 }
