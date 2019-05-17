@@ -32,6 +32,7 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
   protected final TransportStrategy transportFactory;
   protected final ConnectionStrategy connectionStrategy;
 
+  protected boolean invalidateConnectionOnException;
   protected Collection<TransportListener> defaultTransportListeners;
 
   public SmtpConnectionFactory(Session session, TransportStrategy transportStrategy, ConnectionStrategy connectionStrategy, Collection<TransportListener> defaultTransportListeners) {
@@ -53,7 +54,7 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
     Transport transport = transportFactory.getTransport(session);
     connectionStrategy.connect(transport);
 
-    DefaultClosableSmtpConnection closableSmtpTransport = new DefaultClosableSmtpConnection(transport);
+    DefaultClosableSmtpConnection closableSmtpTransport = new DefaultClosableSmtpConnection(transport, invalidateConnectionOnException);
     initDefaultListeners(closableSmtpTransport);
 
     return new DefaultPooledObject(closableSmtpTransport);
@@ -100,6 +101,14 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
 
   public List<TransportListener> getDefaultListeners() {
     return new ArrayList<>(defaultTransportListeners);
+  }
+
+  public boolean isInvalidateConnectionOnException() {
+    return invalidateConnectionOnException;
+  }
+
+  public void setInvalidateConnectionOnException(boolean invalidateConnectionOnException) {
+    this.invalidateConnectionOnException = invalidateConnectionOnException;
   }
 
   public Session getSession() {

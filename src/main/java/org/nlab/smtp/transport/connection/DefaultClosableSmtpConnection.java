@@ -3,6 +3,8 @@ package org.nlab.smtp.transport.connection;
 import org.nlab.smtp.exception.MailSendException;
 import org.nlab.smtp.pool.ObjectPoolAware;
 import org.nlab.smtp.pool.SmtpConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,15 +21,30 @@ import javax.mail.internet.MimeMessage;
 /**
  * Created by nlabrot on 30/04/15.
  */
-public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware<ClosableSmtpConnection> {
+public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, ObjectPoolAware {
+
+  private static final Logger LOG = LoggerFactory.getLogger(DefaultClosableSmtpConnection.class);
 
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
+  private boolean invalidateConnectionOnException;
+  private boolean shouldInvalidateOnClose;
 
   private final List<TransportListener> transportListeners = new ArrayList<>();
 
-  public DefaultClosableSmtpConnection(Transport delegate) {
+  public DefaultClosableSmtpConnection(Transport delegate, boolean invalidateConnectionOnException) {
     this.delegate = delegate;
+    this.invalidateConnectionOnException = invalidateConnectionOnException;
+  }
+
+  @Override
+  public void invalidate() {
+    shouldInvalidateOnClose = true;
+  }
+
+  @Override
+  public void setInvalid(boolean invalid) {
+    shouldInvalidateOnClose = invalid;
   }
 
   public void sendMessage(MimeMessage msg, Address[] recipients) throws MessagingException {
@@ -66,13 +83,16 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
 
   @Override
-  public void close() throws Exception {
-    objectPool.returnObject(this);
-  }
-
-  @Override
-  public SmtpConnectionPool getObjectPool() {
-    return objectPool;
+  public void close() {
+    if(!shouldInvalidateOnClose) {
+      objectPool.returnObject(this);
+    } else {
+      try {
+        objectPool.invalidateObject(this);
+      } catch(Exception e) {
+        LOG.error("Failed to invalidate object in the pool", e);
+      }
+    }
   }
 
   @Override
@@ -93,36 +113,48 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   private void doSend(MimeMessage mimeMessage, Address[] recipients) throws MessagingException {
 
-    if (mimeMessage.getSentDate() == null) {
-      mimeMessage.setSentDate(new Date());
+    try {
+      if (mimeMessage.getSentDate() == null) {
+        mimeMessage.setSentDate(new Date());
+      }
+      String messageId = mimeMessage.getMessageID();
+      mimeMessage.saveChanges();
+      if (messageId != null) {
+        // Preserve explicitly specified message id...
+        mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
+      }
+      delegate.sendMessage(mimeMessage, recipients);
+    } catch(Error | RuntimeException | MessagingException e) {
+      if(invalidateConnectionOnException) {
+        invalidate();
+      }
+      throw e;
     }
-    String messageId = mimeMessage.getMessageID();
-    mimeMessage.saveChanges();
-    if (messageId != null) {
-      // Preserve explicitly specified message id...
-      mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
-    }
-    delegate.sendMessage(mimeMessage, recipients);
   }
 
 
   private void doSend(MimeMessage... mimeMessages) throws MailSendException {
-    Map<Object, Exception> failedMessages = new LinkedHashMap<>();
+    try {
+      Map<Object, Exception> failedMessages = new LinkedHashMap<>();
 
-    for (int i = 0; i < mimeMessages.length; i++) {
+      for (MimeMessage mimeMessage : mimeMessages) {
 
-      // Send message via current transport...
-      MimeMessage mimeMessage = mimeMessages[i];
-      try {
-        doSend(mimeMessage, mimeMessage.getAllRecipients());
-      } catch (Exception ex) {
-        failedMessages.put(mimeMessage, ex);
+        // Send message via current transport...
+        try {
+          doSend(mimeMessage, mimeMessage.getAllRecipients());
+        } catch (Exception ex) {
+          failedMessages.put(mimeMessage, ex);
+        }
       }
-    }
 
-    if (!failedMessages.isEmpty()) {
-      throw new MailSendException(failedMessages);
+      if (!failedMessages.isEmpty()) {
+        throw new MailSendException(failedMessages);
+      }
+    } catch (Error | RuntimeException e) {
+      if(invalidateConnectionOnException) {
+        invalidate();
+      }
+      throw e;
     }
   }
-
 }
