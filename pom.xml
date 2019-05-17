@@ -6,7 +6,7 @@
 
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0-SNAPSHOT</version>
 
     <name>SMTP Connection Pool</name>
     <description>SMTP Connection Pool which uses JavaMail and Apache Common Pool</description>
@@ -36,7 +36,7 @@
 
 
     <properties>
-        <javax.mail.version>1.6.1</javax.mail.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>

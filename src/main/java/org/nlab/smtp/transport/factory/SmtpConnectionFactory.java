@@ -32,18 +32,20 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
   protected final TransportStrategy transportFactory;
   protected final ConnectionStrategy connectionStrategy;
 
-  protected boolean invalidateConnectionOnException;
-  protected Collection<TransportListener> defaultTransportListeners;
+  protected final boolean invalidateConnectionOnException;
 
-  public SmtpConnectionFactory(Session session, TransportStrategy transportStrategy, ConnectionStrategy connectionStrategy, Collection<TransportListener> defaultTransportListeners) {
+  protected List<TransportListener> defaultTransportListeners;
+
+  public SmtpConnectionFactory(Session session, TransportStrategy transportStrategy, ConnectionStrategy connectionStrategy, boolean invalidateConnectionOnException, Collection<TransportListener> defaultTransportListeners) {
     this.session = session;
     this.transportFactory = transportStrategy;
     this.connectionStrategy = connectionStrategy;
+    this.invalidateConnectionOnException = invalidateConnectionOnException;
     this.defaultTransportListeners = new ArrayList<>(defaultTransportListeners);
   }
 
-  public SmtpConnectionFactory(Session session, TransportStrategy transportFactory, ConnectionStrategy connectionStrategy) {
-    this(session, transportFactory, connectionStrategy, Collections.<TransportListener>emptyList());
+  public SmtpConnectionFactory(Session session, TransportStrategy transportFactory, ConnectionStrategy connectionStrategy, boolean invalidateConnectionOnException) {
+    this(session, transportFactory, connectionStrategy, invalidateConnectionOnException, Collections.<TransportListener>emptyList());
   }
 
 
@@ -61,7 +63,7 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
   }
 
   @Override
-  public void destroyObject(PooledObject<ClosableSmtpConnection> pooledObject) throws Exception {
+  public void destroyObject(PooledObject<ClosableSmtpConnection> pooledObject) {
     try {
       if (LOG.isDebugEnabled()) {
         LOG.debug("destroyObject [{}]", pooledObject.getObject().isConnected());
@@ -95,20 +97,12 @@ public class SmtpConnectionFactory implements PooledObjectFactory<ClosableSmtpCo
   }
 
 
-  public void setDefaultListeners(Collection<TransportListener> listeners) {
-    defaultTransportListeners = new CopyOnWriteArrayList<>(Objects.requireNonNull(listeners));
-  }
-
   public List<TransportListener> getDefaultListeners() {
-    return new ArrayList<>(defaultTransportListeners);
+    return Collections.unmodifiableList(defaultTransportListeners);
   }
 
   public boolean isInvalidateConnectionOnException() {
     return invalidateConnectionOnException;
-  }
-
-  public void setInvalidateConnectionOnException(boolean invalidateConnectionOnException) {
-    this.invalidateConnectionOnException = invalidateConnectionOnException;
   }
 
   public Session getSession() {

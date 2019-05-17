@@ -45,6 +45,10 @@ public class AbstractTest {
     genericObjectPoolConfig.setMaxTotal(getMaxTotalConnection());
     genericObjectPoolConfig.setTestOnBorrow(true);
 
+    genericObjectPoolConfig.setMinIdle(0);
+    genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(1000);
+
+
     transportFactory = SmtpConnectionFactoryBuilder.newSmtpBuilder().port(PORT).build();
     smtpConnectionPool = new SmtpConnectionPool(transportFactory, genericObjectPoolConfig);
 

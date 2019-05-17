@@ -26,7 +26,7 @@ public interface ClosableSmtpConnection extends AutoCloseable {
    * Allows setting the invalid flag to true or false
    * @param invalid true if the object should not be returned in the pool when closed.
    */
-  void setInvalid(boolean invalid);
+  void setInvalidateConnectionOnClose(boolean invalid);
 
   /**
    * Send a message to a list of recipients

@@ -10,4 +10,6 @@ public interface ObjectPoolAware {
    * @param objectPool
    */
   void setObjectPool(SmtpConnectionPool objectPool);
+
+  SmtpConnectionPool getObjectPool();
 }

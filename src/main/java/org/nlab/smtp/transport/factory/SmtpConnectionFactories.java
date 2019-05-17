@@ -23,7 +23,7 @@ public final class SmtpConnectionFactories {
    * @return
    */
   public static SmtpConnectionFactory newSmtpFactory() {
-    return new SmtpConnectionFactory(Session.getInstance(new Properties()), newSessiontStrategy(), newConnectionStrategy());
+    return new SmtpConnectionFactory(Session.getInstance(new Properties()), newSessiontStrategy(), newConnectionStrategy(), false);
   }
 
   /**
@@ -36,7 +36,7 @@ public final class SmtpConnectionFactories {
    * @return
    */
   public static SmtpConnectionFactory newSmtpFactory(Session session) {
-    return new SmtpConnectionFactory(session, newSessiontStrategy(), newConnectionStrategy());
+    return new SmtpConnectionFactory(session, newSessiontStrategy(), newConnectionStrategy(), false);
   }
 
 

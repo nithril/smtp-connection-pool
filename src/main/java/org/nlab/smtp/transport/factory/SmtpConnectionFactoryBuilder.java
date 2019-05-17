@@ -39,6 +39,8 @@ public class SmtpConnectionFactoryBuilder {
   protected String username;
   protected String password;
 
+  protected boolean invalidateConnectionOnException;
+
   protected List<TransportListener> defaultTransportListeners = Collections.emptyList();
 
   private SmtpConnectionFactoryBuilder() {
@@ -93,6 +95,11 @@ public class SmtpConnectionFactoryBuilder {
     return this;
   }
 
+  public SmtpConnectionFactoryBuilder invalidateConnectionOnException(boolean invalidateConnectionOnException) {
+    this.invalidateConnectionOnException = invalidateConnectionOnException;
+    return this;
+  }
+
   /**
    * Build the {@link SmtpConnectionFactory}
    *
@@ -112,6 +119,6 @@ public class SmtpConnectionFactoryBuilder {
       connectionStrategy = newConnectionStrategy(host, port, username, password);
     }
 
-    return new SmtpConnectionFactory(session, transportStrategy, connectionStrategy, defaultTransportListeners);
+    return new SmtpConnectionFactory(session, transportStrategy, connectionStrategy, invalidateConnectionOnException, defaultTransportListeners);
   }
 }

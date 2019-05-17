@@ -26,10 +26,11 @@ public class TestSendException extends AbstractTest {
       stopServer();
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
       Assert.fail("The connection should fail since the server is stopped");
-    } catch(MailSendException | MessagingException e) {
+    } catch (MailSendException | MessagingException e) {
       // It should come here, but the connection should not be returned in the pool
     }
     Assert.assertEquals(1, smtpConnectionPool.getBorrowedCount());
+    Assert.assertEquals(0, smtpConnectionPool.getDestroyedCount());
     Assert.assertEquals(1, smtpConnectionPool.getReturnedCount());
   }
 
@@ -40,8 +41,7 @@ public class TestSendException extends AbstractTest {
     genericObjectPoolConfig.setTestOnBorrow(true);
 
     // We need to instantiate a new factory and pool to set the flag on the factory
-    transportFactory = SmtpConnectionFactoryBuilder.newSmtpBuilder().port(PORT).build();
-    transportFactory.setInvalidateConnectionOnException(true);
+    transportFactory = SmtpConnectionFactoryBuilder.newSmtpBuilder().port(PORT).invalidateConnectionOnException(true).build();
     smtpConnectionPool = new SmtpConnectionPool(transportFactory, genericObjectPoolConfig);
 
     try (ClosableSmtpConnection connection = smtpConnectionPool.borrowObject()) {
@@ -55,10 +55,11 @@ public class TestSendException extends AbstractTest {
       stopServer();
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
       Assert.fail("The connection should fail since the server is stopped");
-    } catch(MailSendException | MessagingException e) {
+    } catch (MailSendException | MessagingException e) {
       // It should come here, but the connection should not be returned in the pool
     }
-      Assert.assertEquals(1, smtpConnectionPool.getBorrowedCount());
+    Assert.assertEquals(1, smtpConnectionPool.getBorrowedCount());
+    Assert.assertEquals(1, smtpConnectionPool.getDestroyedCount());
     Assert.assertEquals(0, smtpConnectionPool.getReturnedCount());
   }
 }

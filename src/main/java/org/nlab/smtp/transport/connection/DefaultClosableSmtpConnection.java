@@ -28,7 +28,7 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
   private final Transport delegate;
   private SmtpConnectionPool objectPool;
   private boolean invalidateConnectionOnException;
-  private boolean shouldInvalidateOnClose;
+  private boolean invalidateConnectionOnClose;
 
   private final List<TransportListener> transportListeners = new ArrayList<>();
 
@@ -39,12 +39,12 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   @Override
   public void invalidate() {
-    shouldInvalidateOnClose = true;
+    invalidateConnectionOnClose = true;
   }
 
   @Override
-  public void setInvalid(boolean invalid) {
-    shouldInvalidateOnClose = invalid;
+  public void setInvalidateConnectionOnClose(boolean invalidateConnectionOnClose) {
+    this.invalidateConnectionOnClose = invalidateConnectionOnClose;
   }
 
   public void sendMessage(MimeMessage msg, Address[] recipients) throws MessagingException {
@@ -84,12 +84,12 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
   @Override
   public void close() {
-    if(!shouldInvalidateOnClose) {
+    if (!invalidateConnectionOnClose) {
       objectPool.returnObject(this);
     } else {
       try {
         objectPool.invalidateObject(this);
-      } catch(Exception e) {
+      } catch (Exception e) {
         LOG.error("Failed to invalidate object in the pool", e);
       }
     }
@@ -98,6 +98,11 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
   @Override
   public void setObjectPool(SmtpConnectionPool objectPool) {
     this.objectPool = objectPool;
+  }
+
+  @Override
+  public SmtpConnectionPool getObjectPool() {
+    return objectPool;
   }
 
   @Override
@@ -124,8 +129,10 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
         mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
       }
       delegate.sendMessage(mimeMessage, recipients);
-    } catch(Error | RuntimeException | MessagingException e) {
-      if(invalidateConnectionOnException) {
+    } catch (Exception e) {
+      // TODO: An exception can be sent because the recipient is invalid, ie. not because the connection is invalid
+      // TODO: Invalidate based on the MessagingException subclass / cause: IOException
+      if (invalidateConnectionOnException) {
         invalidate();
       }
       throw e;
@@ -134,27 +141,21 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
 
 
   private void doSend(MimeMessage... mimeMessages) throws MailSendException {
-    try {
-      Map<Object, Exception> failedMessages = new LinkedHashMap<>();
+    Map<Object, Exception> failedMessages = new LinkedHashMap<>();
 
-      for (MimeMessage mimeMessage : mimeMessages) {
+    for (MimeMessage mimeMessage : mimeMessages) {
 
-        // Send message via current transport...
-        try {
-          doSend(mimeMessage, mimeMessage.getAllRecipients());
-        } catch (Exception ex) {
-          failedMessages.put(mimeMessage, ex);
-        }
+      // Send message via current transport...
+      try {
+        // doSend takes care to invalidate the connection if needed
+        doSend(mimeMessage, mimeMessage.getAllRecipients());
+      } catch (Exception ex) {
+        failedMessages.put(mimeMessage, ex);
       }
+    }
 
-      if (!failedMessages.isEmpty()) {
-        throw new MailSendException(failedMessages);
-      }
-    } catch (Error | RuntimeException e) {
-      if(invalidateConnectionOnException) {
-        invalidate();
-      }
-      throw e;
+    if (!failedMessages.isEmpty()) {
+      throw new MailSendException(failedMessages);
     }
   }
 }
