@@ -1,6 +1,7 @@
 # SMTP Connection Pool
 
-This library implements a SMTP connection pool using [Java Mail](https://java.net/projects/javamail/pages/Home) for the SMTP code and the 
+This library implements a SMTP connection pool using [Jakarta Mail](https://eclipse-ee4j.github.io/mail/)
+formerly known as [Java Mail](https://java.net/projects/javamail/pages/Home) for the SMTP code and the
 [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/) for the pool code.
 
 The pool, thanks to the Apache library, supports most common pool features:
@@ -25,7 +26,7 @@ eg.:
 <dependency>
     <groupId>com.github.nithril</groupId>
     <artifactId>smtp-connection-pool</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 ```
  
