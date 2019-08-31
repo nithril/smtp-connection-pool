@@ -36,7 +36,7 @@
 
 
     <properties>
-        <javax.mail.version>1.6.2</javax.mail.version>
+        <jakarta.mail.version>1.6.4</jakarta.mail.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
@@ -46,14 +46,8 @@
 
         <dependency>
             <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>${javax.mail.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>javax.mail-api</artifactId>
-            <version>${javax.mail.version}</version>
+            <artifactId>jakarta.mail</artifactId>
+            <version>${jakarta.mail.version}</version>
         </dependency>
 
         <dependency>
@@ -101,6 +95,12 @@
             <artifactId>greenmail</artifactId>
             <version>1.5.7</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.mail</groupId>
+                    <artifactId>javax.mail</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
