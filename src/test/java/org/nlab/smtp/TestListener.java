@@ -5,14 +5,13 @@ import org.junit.Test;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.mail.event.TransportAdapter;
-import javax.mail.event.TransportEvent;
-import javax.mail.event.TransportListener;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.event.TransportAdapter;
+import jakarta.mail.event.TransportEvent;
+import jakarta.mail.event.TransportListener;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Created by nlabrot on 29/04/15.
@@ -45,11 +44,11 @@ public class TestListener extends AbstractTest {
     try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
       transport.addTransportListener(listener);
       MimeMessage mimeMessage = new MimeMessage(transport.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
       mimeMessageHelper.addTo("nithril@example.com");
       mimeMessageHelper.setFrom("nithril@example.com");
       mimeMessageHelper.setSubject("dd");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
     }
 
@@ -60,11 +59,11 @@ public class TestListener extends AbstractTest {
     try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
       transport.addTransportListener(listener);
       MimeMessage mimeMessage = new MimeMessage(transport.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
       mimeMessageHelper.addTo("nithril@example.com");
       mimeMessageHelper.setFrom("nithril@example.com");
       mimeMessageHelper.setSubject("dd");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
     }
 

@@ -6,7 +6,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 
-import javax.mail.Session;
+import jakarta.mail.Session;
 
 /**
  * Created by nlabrot on 30/04/15.

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Created by nlabrot on 29/04/15.
@@ -125,19 +124,19 @@ public class TestSendMail extends AbstractTest {
       List<MimeMessage> messages = new ArrayList<>();
 
       MimeMessage mimeMessage1 = new MimeMessage(connection.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage1, false);
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage1);
       mimeMessageHelper.addTo("foo@example.com");
       mimeMessageHelper.setFrom("foo@example.com");
       mimeMessageHelper.setSubject("foo");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       messages.add(mimeMessage1);
 
       MimeMessage mimeMessage2 = new MimeMessage(connection.getSession());
-      mimeMessageHelper = new MimeMessageHelper(mimeMessage2, false);
+      mimeMessageHelper = new MimeMessageHelper(mimeMessage2);
       mimeMessageHelper.addTo("foo@example.com");
       mimeMessageHelper.setFrom("foo@example.com");
       mimeMessageHelper.setSubject("foo");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       messages.add(mimeMessage2);
 
       connection.sendMessages(mimeMessage1, mimeMessage2);

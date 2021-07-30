@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.event.TransportListener;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Address;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.event.TransportListener;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Created by nlabrot on 30/04/15.

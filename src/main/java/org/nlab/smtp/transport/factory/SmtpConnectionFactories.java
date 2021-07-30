@@ -4,7 +4,7 @@ import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConn
 import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newSessiontStrategy;
 
 import java.util.Properties;
-import javax.mail.Session;
+import jakarta.mail.Session;
 
 /**
  * {@link SmtpConnectionFactory} factory

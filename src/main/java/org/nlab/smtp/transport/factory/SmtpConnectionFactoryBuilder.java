@@ -14,9 +14,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import javax.mail.Authenticator;
-import javax.mail.Session;
-import javax.mail.event.TransportListener;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Session;
+import jakarta.mail.event.TransportListener;
 
 /**
  * A part of the code of this class is taken from the Spring
