@@ -1,11 +1,11 @@
 package org.nlab.smtp.transport.strategy;
 
-import javax.mail.Address;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Provider;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.URLName;
+import jakarta.mail.Address;
+import jakarta.mail.NoSuchProviderException;
+import jakarta.mail.Provider;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.URLName;
 
 /**
  * {@link Session} supports actually 4 types of get transport which are handled by this transport strategy

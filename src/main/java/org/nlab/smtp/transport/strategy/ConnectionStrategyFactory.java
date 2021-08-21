@@ -1,7 +1,7 @@
 package org.nlab.smtp.transport.strategy;
 
-import javax.mail.MessagingException;
-import javax.mail.Transport;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Transport;
 
 /**
  * {@link Transport} supports actually 4 types of connections which are handled by this connection strategy factory

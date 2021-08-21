@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.event.TransportListener;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.event.TransportListener;
 
 /**
  * A part of the code of this class is taken from the Spring <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSenderImpl.html">JavaMailSenderImpl class</a>.

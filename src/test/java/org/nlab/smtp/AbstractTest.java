@@ -4,6 +4,7 @@ import com.google.common.base.Stopwatch;
 import com.icegreen.greenmail.imap.ImapHostManager;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import jakarta.mail.Message;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.Before;
@@ -11,10 +12,10 @@ import org.nlab.smtp.pool.SmtpConnectionPool;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Created by nlabrot on 01/05/15.
@@ -75,11 +76,11 @@ public class AbstractTest {
   protected void send() throws Exception {
     try (ClosableSmtpConnection connection = smtpConnectionPool.borrowObject()) {
       MimeMessage mimeMessage = new MimeMessage(connection.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
-      mimeMessageHelper.addTo("nithril@example.com");
-      mimeMessageHelper.setFrom("nithril@example.com");
-      mimeMessageHelper.setSubject("foo");
-      mimeMessageHelper.setText("example", false);
+      mimeMessage.addRecipients(Message.RecipientType.TO, "nithril@example.com");
+      mimeMessage.setFrom("nithril@example.com");
+      mimeMessage.setSubject("foo");
+      mimeMessage.setText("example", StandardCharsets.UTF_8.name());
+      mimeMessage.saveChanges();
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
     }
   }

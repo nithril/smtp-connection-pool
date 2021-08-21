@@ -7,21 +7,20 @@ import org.nlab.smtp.exception.MailSendException;
 import org.nlab.smtp.pool.SmtpConnectionPool;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 public class TestSendException extends AbstractTest {
   @Test
   public void testReturnedOnException() throws Exception {
     try (ClosableSmtpConnection connection = smtpConnectionPool.borrowObject()) {
       MimeMessage mimeMessage = new MimeMessage(connection.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
       mimeMessageHelper.addTo("nithril@example.com");
       mimeMessageHelper.setFrom("nithril@example.com");
       mimeMessageHelper.setSubject("foo");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       // We stop the server before we actually send the message
       stopServer();
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
@@ -46,11 +45,11 @@ public class TestSendException extends AbstractTest {
 
     try (ClosableSmtpConnection connection = smtpConnectionPool.borrowObject()) {
       MimeMessage mimeMessage = new MimeMessage(connection.getSession());
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
       mimeMessageHelper.addTo("nithril@example.com");
       mimeMessageHelper.setFrom("nithril@example.com");
       mimeMessageHelper.setSubject("foo");
-      mimeMessageHelper.setText("example", false);
+      mimeMessageHelper.setText("example");
       // We stop the server before we actually send the message
       stopServer();
       connection.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
