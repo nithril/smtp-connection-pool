@@ -1,10 +1,8 @@
 package org.nlab.smtp.transport.factory;
 
-import static java.util.Objects.requireNonNull;
-import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;
-import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newProtocolStrategy;
-import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newSessiontStrategy;
-
+import jakarta.mail.Authenticator;
+import jakarta.mail.Session;
+import jakarta.mail.event.TransportListener;
 import org.nlab.smtp.transport.strategy.ConnectionStrategy;
 import org.nlab.smtp.transport.strategy.ConnectionStrategyFactory;
 import org.nlab.smtp.transport.strategy.TransportStrategy;
@@ -14,9 +12,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import jakarta.mail.Authenticator;
-import jakarta.mail.Session;
-import jakarta.mail.event.TransportListener;
+
+import static java.util.Objects.requireNonNull;
+import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;
+import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newProtocolStrategy;
+import static org.nlab.smtp.transport.strategy.TransportStrategyFactory.newSessiontStrategy;
 
 /**
  * A part of the code of this class is taken from the Spring
@@ -32,93 +32,93 @@ import jakarta.mail.event.TransportListener;
  */
 public class SmtpConnectionFactoryBuilder {
 
-  protected Session session = null;
-  protected String protocol = null;
-  protected String host = null;
-  protected int port = -1;
-  protected String username;
-  protected String password;
+    protected Session session = null;
+    protected String protocol = null;
+    protected String host = null;
+    protected int port = -1;
+    protected String username;
+    protected String password;
 
-  protected boolean invalidateConnectionOnException;
+    protected boolean invalidateConnectionOnException;
 
-  protected List<TransportListener> defaultTransportListeners = Collections.emptyList();
+    protected List<TransportListener> defaultTransportListeners = Collections.emptyList();
 
-  private SmtpConnectionFactoryBuilder() {
-  }
-
-  public static SmtpConnectionFactoryBuilder newSmtpBuilder() {
-    return new SmtpConnectionFactoryBuilder();
-  }
-
-  public SmtpConnectionFactoryBuilder session(Properties properties) {
-    this.session = Session.getInstance(properties);
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder session(Properties properties, Authenticator authenticator) {
-    this.session = Session.getInstance(properties, authenticator);
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder session(Session session) {
-    this.session = requireNonNull(session);
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder protocol(String protocol) {
-    this.protocol = protocol;
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder host(String host) {
-    this.host = host;
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder port(int port) {
-    this.port = port;
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder username(String username) {
-    this.username = username;
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder password(String password) {
-    this.password = password;
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder defaultTransportListeners(TransportListener... listeners) {
-    defaultTransportListeners = Arrays.asList(requireNonNull(listeners));
-    return this;
-  }
-
-  public SmtpConnectionFactoryBuilder invalidateConnectionOnException(boolean invalidateConnectionOnException) {
-    this.invalidateConnectionOnException = invalidateConnectionOnException;
-    return this;
-  }
-
-  /**
-   * Build the {@link SmtpConnectionFactory}
-   *
-   * @return
-   */
-  public SmtpConnectionFactory build() {
-    if (session == null) {
-      session = Session.getInstance(new Properties());
+    private SmtpConnectionFactoryBuilder() {
     }
 
-    TransportStrategy transportStrategy = protocol == null ? newSessiontStrategy() : newProtocolStrategy(protocol);
-
-    ConnectionStrategy connectionStrategy;
-    if (host == null && port == -1 && username == null && password == null) {
-      connectionStrategy = newConnectionStrategy();
-    } else {
-      connectionStrategy = newConnectionStrategy(host, port, username, password);
+    public static SmtpConnectionFactoryBuilder newSmtpBuilder() {
+        return new SmtpConnectionFactoryBuilder();
     }
 
-    return new SmtpConnectionFactory(session, transportStrategy, connectionStrategy, invalidateConnectionOnException, defaultTransportListeners);
-  }
+    public SmtpConnectionFactoryBuilder session(Properties properties) {
+        this.session = Session.getInstance(properties);
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder session(Properties properties, Authenticator authenticator) {
+        this.session = Session.getInstance(properties, authenticator);
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder session(Session session) {
+        this.session = requireNonNull(session);
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder protocol(String protocol) {
+        this.protocol = protocol;
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder host(String host) {
+        this.host = host;
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder port(int port) {
+        this.port = port;
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder username(String username) {
+        this.username = username;
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder password(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder defaultTransportListeners(TransportListener... listeners) {
+        defaultTransportListeners = Arrays.asList(requireNonNull(listeners));
+        return this;
+    }
+
+    public SmtpConnectionFactoryBuilder invalidateConnectionOnException(boolean invalidateConnectionOnException) {
+        this.invalidateConnectionOnException = invalidateConnectionOnException;
+        return this;
+    }
+
+    /**
+     * Build the {@link SmtpConnectionFactory}
+     *
+     * @return
+     */
+    public SmtpConnectionFactory build() {
+        if (session == null) {
+            session = Session.getInstance(new Properties());
+        }
+
+        TransportStrategy transportStrategy = protocol == null ? newSessiontStrategy() : newProtocolStrategy(protocol);
+
+        ConnectionStrategy connectionStrategy;
+        if (host == null && port == -1 && username == null && password == null) {
+            connectionStrategy = newConnectionStrategy();
+        } else {
+            connectionStrategy = newConnectionStrategy(host, port, username, password);
+        }
+
+        return new SmtpConnectionFactory(session, transportStrategy, connectionStrategy, invalidateConnectionOnException, defaultTransportListeners);
+    }
 }

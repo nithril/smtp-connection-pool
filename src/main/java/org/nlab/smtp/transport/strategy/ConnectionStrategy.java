@@ -10,6 +10,6 @@ import jakarta.mail.Transport;
  */
 public interface ConnectionStrategy {
 
-  void connect(Transport transport) throws MessagingException;
+    void connect(Transport transport) throws MessagingException;
 
 }

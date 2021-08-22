@@ -85,11 +85,10 @@ SmtpConnectionPool smtpConnectionPool = new SmtpConnectionPool(SmtpConnectionFac
 //borrow an object in a try-with-resource statement or call `close` by yourself
 try (ClosableSmtpConnection transport = smtpConnectionPool.borrowObject()) {
     MimeMessage mimeMessage = new MimeMessage(transport.getSession());
-    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
-    mimeMessageHelper.addTo("to@example.com");
-    mimeMessageHelper.setFrom("from@example.com");
-    mimeMessageHelper.setSubject("Hi!");
-    mimeMessageHelper.setText("Hello World!", false);
+    mimeMessage.addRecipients(Message.RecipientType.TO, to);
+    mimeMessage.setFrom("from@example.com");
+    mimeMessage.setSubject("Hi!");
+    mimeMessage.setText("Hello World!");
     transport.sendMessage(mimeMessage);
 }
 

@@ -17,64 +17,64 @@ import jakarta.mail.Transport;
 public class ConnectionStrategyFactory {
 
 
-  public static ConnectionStrategy newConnectionStrategy() {
-    return new ConnectionStrategy() {
-      @Override
-      public void connect(Transport transport) throws MessagingException {
-        transport.connect();
-      }
-    };
-  }
+    public static ConnectionStrategy newConnectionStrategy() {
+        return new ConnectionStrategy() {
+            @Override
+            public void connect(Transport transport) throws MessagingException {
+                transport.connect();
+            }
+        };
+    }
 
-  public static ConnectionStrategy newConnectionStrategy(final String username, final String password) {
-    return new ConnectionStrategy() {
-      @Override
-      public void connect(Transport transport) throws MessagingException {
-        transport.connect(username, password);
-      }
+    public static ConnectionStrategy newConnectionStrategy(final String username, final String password) {
+        return new ConnectionStrategy() {
+            @Override
+            public void connect(Transport transport) throws MessagingException {
+                transport.connect(username, password);
+            }
 
-      @Override
-      public String toString() {
-        return "ConnectionStrategy{" +
-            "username=" + username +
-            '}';
-      }
+            @Override
+            public String toString() {
+                return "ConnectionStrategy{" +
+                        "username=" + username +
+                        '}';
+            }
 
-    };
-  }
+        };
+    }
 
-  public static ConnectionStrategy newConnectionStrategy(final String host, final String username, final String password) {
-    return new ConnectionStrategy() {
-      @Override
-      public void connect(Transport transport) throws MessagingException {
-        transport.connect(host, username, password);
-      }
+    public static ConnectionStrategy newConnectionStrategy(final String host, final String username, final String password) {
+        return new ConnectionStrategy() {
+            @Override
+            public void connect(Transport transport) throws MessagingException {
+                transport.connect(host, username, password);
+            }
 
-      @Override
-      public String toString() {
-        return "ConnectionStrategy{" +
-            "host=" + host +
-            ", username=" + username +
-            '}';
-      }
-    };
-  }
+            @Override
+            public String toString() {
+                return "ConnectionStrategy{" +
+                        "host=" + host +
+                        ", username=" + username +
+                        '}';
+            }
+        };
+    }
 
-  public static ConnectionStrategy newConnectionStrategy(final String host, final int port, final String username, final String password) {
-    return new ConnectionStrategy() {
-      @Override
-      public void connect(Transport transport) throws MessagingException {
-        transport.connect(host, port, username, password);
-      }
+    public static ConnectionStrategy newConnectionStrategy(final String host, final int port, final String username, final String password) {
+        return new ConnectionStrategy() {
+            @Override
+            public void connect(Transport transport) throws MessagingException {
+                transport.connect(host, port, username, password);
+            }
 
-      @Override
-      public String toString() {
-        return "ConnectionStrategy{" +
-            "host=" + host +
-            ", port=" + port +
-            ", username=" + username +
-            '}';
-      }
-    };
-  }
+            @Override
+            public String toString() {
+                return "ConnectionStrategy{" +
+                        "host=" + host +
+                        ", port=" + port +
+                        ", username=" + username +
+                        '}';
+            }
+        };
+    }
 }

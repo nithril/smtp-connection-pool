@@ -1,11 +1,6 @@
 package org.nlab.smtp.transport.strategy;
 
-import jakarta.mail.Address;
-import jakarta.mail.NoSuchProviderException;
-import jakarta.mail.Provider;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.URLName;
+import jakarta.mail.*;
 
 /**
  * {@link Session} supports actually 4 types of get transport which are handled by this transport strategy
@@ -22,49 +17,49 @@ import jakarta.mail.URLName;
  */
 public class TransportStrategyFactory {
 
-  public static TransportStrategy newSessiontStrategy() {
-    return new TransportStrategy() {
-      @Override
-      public Transport getTransport(Session session) throws NoSuchProviderException {
-        return session.getTransport();
-      }
-    };
-  }
+    public static TransportStrategy newSessiontStrategy() {
+        return new TransportStrategy() {
+            @Override
+            public Transport getTransport(Session session) throws NoSuchProviderException {
+                return session.getTransport();
+            }
+        };
+    }
 
-  public static TransportStrategy newProtocolStrategy(final String protocol) {
-    return new TransportStrategy() {
-      @Override
-      public Transport getTransport(Session session) throws NoSuchProviderException {
-        return session.getTransport(protocol);
-      }
-    };
-  }
+    public static TransportStrategy newProtocolStrategy(final String protocol) {
+        return new TransportStrategy() {
+            @Override
+            public Transport getTransport(Session session) throws NoSuchProviderException {
+                return session.getTransport(protocol);
+            }
+        };
+    }
 
-  public static TransportStrategy newUrlNameStrategy(final URLName urlName) {
-    return new TransportStrategy() {
-      @Override
-      public Transport getTransport(Session session) throws NoSuchProviderException {
-        return session.getTransport(urlName);
-      }
-    };
-  }
+    public static TransportStrategy newUrlNameStrategy(final URLName urlName) {
+        return new TransportStrategy() {
+            @Override
+            public Transport getTransport(Session session) throws NoSuchProviderException {
+                return session.getTransport(urlName);
+            }
+        };
+    }
 
-  public static TransportStrategy newAddressStrategy(final Address address) {
-    return new TransportStrategy() {
-      @Override
-      public Transport getTransport(Session session) throws NoSuchProviderException {
-        return session.getTransport(address);
-      }
-    };
-  }
+    public static TransportStrategy newAddressStrategy(final Address address) {
+        return new TransportStrategy() {
+            @Override
+            public Transport getTransport(Session session) throws NoSuchProviderException {
+                return session.getTransport(address);
+            }
+        };
+    }
 
-  public static TransportStrategy newProviderStrategy(final Provider provider) {
-    return new TransportStrategy() {
-      @Override
-      public Transport getTransport(Session session) throws NoSuchProviderException {
-        return session.getTransport(provider);
-      }
-    };
-  }
+    public static TransportStrategy newProviderStrategy(final Provider provider) {
+        return new TransportStrategy() {
+            @Override
+            public Transport getTransport(Session session) throws NoSuchProviderException {
+                return session.getTransport(provider);
+            }
+        };
+    }
 
 }

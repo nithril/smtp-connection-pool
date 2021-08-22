@@ -12,6 +12,6 @@ import jakarta.mail.Transport;
  */
 public interface TransportStrategy {
 
-  Transport getTransport(Session session) throws NoSuchProviderException;
+    Transport getTransport(Session session) throws NoSuchProviderException;
 
 }
