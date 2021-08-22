@@ -14,7 +14,7 @@ The pool, thanks to the Apache library, supports most common pool features:
 
 # Requirements
 
-Java 1.7
+Java 1.8
 
 # Maven dependency
 
