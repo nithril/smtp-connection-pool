@@ -1,15 +1,15 @@
 package org.nlab.smtp;
 
-import jakarta.mail.event.TransportAdapter;
-import jakarta.mail.event.TransportEvent;
-import jakarta.mail.event.TransportListener;
-import jakarta.mail.internet.MimeMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.event.TransportAdapter;
+import javax.mail.event.TransportEvent;
+import javax.mail.event.TransportListener;
+import javax.mail.internet.MimeMessage;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 

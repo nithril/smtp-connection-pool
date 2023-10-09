@@ -1,8 +1,5 @@
 package org.nlab.smtp.transport.factory;
 
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.event.TransportListener;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -13,6 +10,9 @@ import org.nlab.smtp.transport.strategy.TransportStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.event.TransportListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

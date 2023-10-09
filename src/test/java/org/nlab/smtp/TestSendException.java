@@ -1,7 +1,5 @@
 package org.nlab.smtp;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,6 +7,9 @@ import org.nlab.smtp.exception.MailSendException;
 import org.nlab.smtp.pool.SmtpConnectionPool;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 public class TestSendException extends AbstractTest {
     @Test

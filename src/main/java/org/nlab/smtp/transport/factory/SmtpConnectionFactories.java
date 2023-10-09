@@ -1,7 +1,6 @@
 package org.nlab.smtp.transport.factory;
 
-import jakarta.mail.Session;
-
+import javax.mail.Session;
 import java.util.Properties;
 
 import static org.nlab.smtp.transport.strategy.ConnectionStrategyFactory.newConnectionStrategy;

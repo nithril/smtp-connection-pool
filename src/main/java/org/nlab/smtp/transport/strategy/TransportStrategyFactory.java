@@ -1,6 +1,6 @@
 package org.nlab.smtp.transport.strategy;
 
-import jakarta.mail.*;
+import javax.mail.*;
 
 /**
  * {@link Session} supports actually 4 types of get transport which are handled by this transport strategy

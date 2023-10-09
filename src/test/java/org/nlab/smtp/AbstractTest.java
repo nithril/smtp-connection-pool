@@ -4,9 +4,6 @@ import com.google.common.base.Stopwatch;
 import com.icegreen.greenmail.imap.ImapHostManager;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import jakarta.mail.Message;
-import jakarta.mail.Session;
-import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +12,9 @@ import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactoryBuilder;
 
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.util.concurrent.TimeUnit;
 
 /**

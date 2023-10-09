@@ -1,13 +1,13 @@
 package org.nlab.smtp.transport.factory;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.Session;
-import jakarta.mail.event.TransportListener;
 import org.nlab.smtp.transport.strategy.ConnectionStrategy;
 import org.nlab.smtp.transport.strategy.ConnectionStrategyFactory;
 import org.nlab.smtp.transport.strategy.TransportStrategy;
 import org.nlab.smtp.transport.strategy.TransportStrategyFactory;
 
+import javax.mail.Authenticator;
+import javax.mail.Session;
+import javax.mail.event.TransportListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -106,14 +106,14 @@ public class SmtpConnectionFactoryBuilder {
      * @return
      */
     public SmtpConnectionFactory build() {
-        if (session == null) {
+        if (session==null) {
             session = Session.getInstance(new Properties());
         }
 
-        TransportStrategy transportStrategy = protocol == null ? newSessiontStrategy() : newProtocolStrategy(protocol);
+        TransportStrategy transportStrategy = protocol==null ? newSessiontStrategy():newProtocolStrategy(protocol);
 
         ConnectionStrategy connectionStrategy;
-        if (host == null && port == -1 && username == null && password == null) {
+        if (host==null && port==-1 && username==null && password==null) {
             connectionStrategy = newConnectionStrategy();
         } else {
             connectionStrategy = newConnectionStrategy(host, port, username, password);

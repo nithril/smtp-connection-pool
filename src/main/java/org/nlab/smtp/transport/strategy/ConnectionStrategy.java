@@ -1,7 +1,7 @@
 package org.nlab.smtp.transport.strategy;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.Transport;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
 
 /**
  * Connection strategy that abstract {@link Transport#connect}

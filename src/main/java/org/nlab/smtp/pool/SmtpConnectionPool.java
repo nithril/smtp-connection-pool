@@ -1,11 +1,12 @@
 package org.nlab.smtp.pool;
 
-import jakarta.mail.Session;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.nlab.smtp.transport.factory.SmtpConnectionFactory;
+
+import javax.mail.Session;
 
 /**
  * Created by nlabrot on 30/04/15.

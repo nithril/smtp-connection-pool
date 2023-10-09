@@ -1,8 +1,8 @@
 package org.nlab.smtp.transport.strategy;
 
-import jakarta.mail.NoSuchProviderException;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Transport;
 
 /**
  * Connection strategy that abstract {@link Session#getTransport}

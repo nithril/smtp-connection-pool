@@ -1,17 +1,17 @@
 package org.nlab.smtp.transport.connection;
 
-import jakarta.mail.Address;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.event.TransportListener;
-import jakarta.mail.internet.MimeMessage;
 import org.nlab.smtp.exception.MailSendException;
 import org.nlab.smtp.pool.ObjectPoolAware;
 import org.nlab.smtp.pool.SmtpConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.Address;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.event.TransportListener;
+import javax.mail.internet.MimeMessage;
 import java.util.*;
 
 /**
@@ -115,12 +115,12 @@ public class DefaultClosableSmtpConnection implements ClosableSmtpConnection, Ob
     private void doSend(MimeMessage mimeMessage, Address[] recipients) throws MessagingException {
 
         try {
-            if (mimeMessage.getSentDate() == null) {
+            if (mimeMessage.getSentDate()==null) {
                 mimeMessage.setSentDate(new Date());
             }
             String messageId = mimeMessage.getMessageID();
             mimeMessage.saveChanges();
-            if (messageId != null) {
+            if (messageId!=null) {
                 // Preserve explicitly specified message id...
                 mimeMessage.setHeader(HEADER_MESSAGE_ID, messageId);
             }

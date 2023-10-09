@@ -1,13 +1,13 @@
 package org.nlab.smtp;
 
 import com.icegreen.greenmail.store.StoredMessage;
-import jakarta.mail.internet.MimeMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nlab.smtp.transport.connection.ClosableSmtpConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
